@@ -39,7 +39,7 @@ cli
   )
   .option("-i, --input [input]", "input file")
   .option("-d, --dist [dist]", "dist file")
-  .option("--svgo [svgo]", "use svgo plugins", true)
+  .option("--svgo [svgo]", "use svgo plugins")
   .parse(process.argv);
 
 const { input, dist = input, svgo } = cli.opts();
@@ -62,7 +62,7 @@ try {
 
   let options = {};
 
-  if (svgo && svgo !== "false") {
+  if (svgo) {
     log.success({ name: "Optmizing", message: `Using ${green("svgo")}` });
     options = {
       plugins: [
@@ -145,7 +145,7 @@ try {
     });
     let content = file;
 
-    if (svgo && svgo !== "false") {
+    if (svgo) {
       const { data } = await optimize(
         readFileSync(resolve(input, fileName), {
           encoding: "utf8",
