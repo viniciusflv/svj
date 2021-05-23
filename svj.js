@@ -1,8 +1,8 @@
+const chalk = require("chalk");
 const { resolve } = require("path");
 const { parse } = require("svgson");
 const { optimize } = require("svgo");
 const { Command } = require("commander");
-const { bold, green, red, yellow, blue } = require("chalk");
 const {
   readFileSync,
   readdirSync,
@@ -14,18 +14,27 @@ const {
 const { name, version } = require("./package.json");
 
 const log = {
-  _layout: (name, message) => console.log(name, "-", message),
+  _layout: (name, message) => console.log(name, message),
   success({ name = "Success", message = "" }) {
-    this._layout(green(bold(name)), message);
+    this._layout(
+      chalk.bold.hex("#292836").bgHex("#00ff79")(` ${name} `),
+      message
+    );
   },
   error({ name = "Error", message = "" }) {
-    this._layout(red(bold(name)), message);
+    this._layout(chalk.bold.hex("#fff").bgHex("#ff0056")(` ${name} `), message);
   },
   warning({ name = "Warning", message = "" }) {
-    this._layout(yellow(bold(name)), message);
+    this._layout(
+      chalk.bold.hex("#292836").bgHex("#e6ff8b")(` ${name} `),
+      message
+    );
   },
   info({ name = "Info", message = "" }) {
-    this._layout(blue(bold(name)), message);
+    this._layout(
+      chalk.hex("#292836").bgHex("#74fffe").bold(` ${name} `),
+      message
+    );
   },
 };
 const err = Error();
@@ -33,21 +42,22 @@ const cli = new Command(name);
 
 cli
   .version(
-    `${green("svj")} version ${blue(version)}`,
+    `${chalk.green("svj")} version ${chalk.blue(version)}`,
     "-v, --version",
     "current version"
   )
   .option("-i, --input [input]", "input file")
   .option("-d, --dist [dist]", "dist file")
-  .option("--svgo [svgo]", "use svgo plugins")
+  .option("--svgo", "use svgo optmizer")
+  .option("--esm", "use ECMAScript Modules")
   .parse(process.argv);
 
-const { input, dist = input, svgo } = cli.opts();
+const { input, dist = input, svgo, esm } = cli.opts();
 
 try {
   if (!input) {
     err.name = "Missing input value";
-    err.message = `Please use the option ${green("-i")} or ${green(
+    err.message = `Please use the option ${chalk.green("-i")} or ${chalk.green(
       "--input"
     )} to declare the path to your svgs folder.`;
     throw err;
@@ -56,14 +66,22 @@ try {
   if (dist === input) {
     log.warning({
       name: "Dist not declared",
-      message: `Using input path "${green(input)}" as dist path`,
+      message: `Using input path "${chalk.green(input)}" as dist path`,
+    });
+  }
+
+  if (!esm) {
+    log.warning({
+      message: `${chalk.green("--esm")} flag not found using ${chalk.bold(
+        "CommonJS"
+      )} syntax`,
     });
   }
 
   let options = {};
 
   if (svgo) {
-    log.success({ name: "Optmizing", message: `Using ${green("svgo")}` });
+    log.success({ name: "Optmizing", message: `Using ${chalk.green("svgo")}` });
     options = {
       plugins: [
         "removeDoctype",
@@ -105,7 +123,9 @@ try {
     };
   } else {
     log.warning({
-      message: `Not using ${green("svgo")} to optimize your svgs`,
+      message: `Not using de flag ${chalk.green(
+        "--svgo"
+      )} to optimize your svgs`,
     });
   }
 
@@ -180,18 +200,30 @@ try {
         return ext === "svg";
       })
       .reduce(async (acc, fileName) => {
-        log.info({ message: `Compiling ${green(fileName)}` });
-
         const key = fileName.split(".")[0];
         const value = await parseToJson(fileName);
         const accumulator = await acc;
+        const distFile = `${key}.js`;
+        const jsonStr = JSON.stringify(value, undefined, 2);
+        let asset;
+        let indexer;
 
-        writeFileSync(
-          resolve(dist, `${key}.js`),
-          `export const ${key} = ${JSON.stringify(value, undefined, 2)}`
-        );
+        log.info({
+          name: "Compiling",
+          message: `${fileName} ${chalk.grey("as")} ${chalk.bold(distFile)}`,
+        });
 
-        return `${accumulator}export * from './${key}';\n`;
+        if (esm) {
+          asset = `export const ${key} = ${jsonStr}`;
+          indexer = `export * from './${key}';\n`;
+        } else {
+          asset = `module.exports.${key} = ${jsonStr}`;
+          indexer = `module.exports.${key} = require('./${key}').${key};\n`;
+        }
+
+        writeFileSync(resolve(dist, distFile), asset);
+
+        return accumulator + indexer;
       }, Promise.resolve(""));
 
     writeFileSync(resolve(dist, "index.js"), indexes);
@@ -202,7 +234,10 @@ try {
   writeFiles(({ number }) =>
     log.success({
       name: "Completed",
-      message: `Compiled ${green(number, "files")} to ${blue(dist)}`,
+      message: `${chalk.gray("Compiled")} ${chalk.green(
+        number,
+        "files"
+      )} ${chalk.gray("to")} ${chalk.bold(dist)}`,
     })
   );
 } catch (error) {
