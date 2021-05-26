@@ -2,18 +2,26 @@
   "name": "svj",
   "version": "0.0.1",
   "description": "CLI to optmize and convert SVGs to JSON resource",
-  "keywords": ["svg", "json", "js", "cli"],
+  "keywords": [
+    "svg",
+    "json",
+    "js",
+    "cli"
+  ],
   "author": "Vinícius Victorino",
   "license": "MIT",
   "private": false,
   "main": "svj.js",
-  "files": ["svj.js"],
+  "files": [
+    "svj.js"
+  ],
   "bin": {
     "svj": "./svj.js"
   },
   "dependencies": {
     "chalk": "^4.1.1",
     "commander": "^7.2.0",
+    "inquirer": "^8.1.0",
     "svgo": "^2.3.0",
     "svgson": "^5.2.1"
   },
