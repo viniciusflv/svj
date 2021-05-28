@@ -1,0 +1,18 @@
+{
+  "git": {
+    "tag": true,
+    "push": true,
+    "commit": true,
+    "requireBranch": "main",
+    "commitMessage": "chore(release): release ${version}"
+  },
+  "npm": {
+    "publish": true
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
+    }
+  }
+}

@@ -1,46 +1,46 @@
 #!/usr/bin/env node
 
-const chalk = require("chalk");
-const inquirer = require("inquirer");
-const { resolve } = require("path");
-const { parse } = require("svgson");
-const { optimize } = require("svgo");
-const { Command } = require("commander");
+const chalk = require('chalk');
+const inquirer = require('inquirer');
+const { resolve } = require('path');
+const { parse } = require('svgson');
+const { optimize } = require('svgo');
+const { Command } = require('commander');
 const {
   readFileSync,
   readdirSync,
   writeFileSync,
   existsSync,
   mkdirSync,
-} = require("fs");
+} = require('fs');
 
-const { name, version } = require("./package.json");
+const { name, version } = require('./package.json');
 
 async function runner() {
   const log = {
     _layout: (name, message) => console.log(name, message),
-    success({ name = "Success", message = "" }) {
+    success({ name = 'Success', message = '' }) {
       this._layout(
-        chalk.bold.hex("#292836").bgHex("#00ff79")(` ${name} `),
-        message
+        chalk.bold.hex('#292836').bgHex('#00ff79')(` ${name} `),
+        message,
       );
     },
-    error({ name = "Error", message = "" }) {
+    error({ name = 'Error', message = '' }) {
       this._layout(
-        chalk.bold.hex("#fff").bgHex("#ff0056")(` ${name} `),
-        message
+        chalk.bold.hex('#fff').bgHex('#ff0056')(` ${name} `),
+        message,
       );
     },
-    warning({ name = "Warning", message = "" }) {
+    warning({ name = 'Warning', message = '' }) {
       this._layout(
-        chalk.bold.hex("#292836").bgHex("#e6ff8b")(` ${name} `),
-        message
+        chalk.bold.hex('#292836').bgHex('#e6ff8b')(` ${name} `),
+        message,
       );
     },
-    info({ name = "Info", message = "" }) {
+    info({ name = 'Info', message = '' }) {
       this._layout(
-        chalk.hex("#292836").bgHex("#74fffe").bold(` ${name} `),
-        message
+        chalk.hex('#292836').bgHex('#74fffe').bold(` ${name} `),
+        message,
       );
     },
   };
@@ -49,14 +49,14 @@ async function runner() {
 
   cli
     .version(
-      `${chalk.green("svj")} version ${chalk.blue(version)}`,
-      "-v, --version",
-      "current version"
+      `${chalk.green('svj')} version ${chalk.blue(version)}`,
+      '-v, --version',
+      'current version',
     )
-    .option("-i, --input [input]", "input file")
-    .option("-d, --dist [dist]", "dist file")
-    .option("--svgo", "use svgo optmizer")
-    .option("--esm", "use ECMAScript Modules")
+    .option('-i, --input [input]', 'input file')
+    .option('-d, --dist [dist]', 'dist file')
+    .option('--svgo', 'use svgo optmizer')
+    .option('--esm', 'use ECMAScript Modules')
     .parse(process.argv);
 
   let { input, dist, svgo, esm } = cli.opts();
@@ -66,18 +66,18 @@ async function runner() {
     if (!input) {
       const prompt = await inquirer.prompt([
         {
-          type: "input",
-          name: "input",
-          message: "Input Folder:",
+          type: 'input',
+          name: 'input',
+          message: 'Input Folder:',
         },
       ]);
       input = prompt.input;
       if (!prompt.input) {
-        err.name = "Missing input value";
+        err.name = 'Missing input value';
         err.message = `Please use the option ${chalk.green(
-          "-i"
+          '-i',
         )} or ${chalk.green(
-          "--input"
+          '--input',
         )} to declare the path to your svgs folder.`;
         throw err;
       }
@@ -86,9 +86,9 @@ async function runner() {
     if (!dist) {
       const prompt = await inquirer.prompt([
         {
-          type: "input",
-          name: "dist",
-          message: "Dist File:",
+          type: 'input',
+          name: 'dist',
+          message: 'Dist File:',
           default: input,
         },
       ]);
@@ -96,7 +96,7 @@ async function runner() {
       if (!prompt.dist) {
         dist = input;
         log.warning({
-          name: "Empty dist",
+          name: 'Empty dist',
           message: `Using input path ${chalk.green(input)} as dist`,
         });
       }
@@ -105,9 +105,9 @@ async function runner() {
     if (!esm) {
       const prompt = await inquirer.prompt([
         {
-          type: "confirm",
-          name: "esm",
-          message: "Use ECMAScript Modules?",
+          type: 'confirm',
+          name: 'esm',
+          message: 'Use ECMAScript Modules?',
         },
       ]);
       esm = prompt.esm;
@@ -121,9 +121,9 @@ async function runner() {
     if (!svgo) {
       const prompt = await inquirer.prompt([
         {
-          type: "confirm",
-          name: "svgo",
-          message: "Optimize with svgo?",
+          type: 'confirm',
+          name: 'svgo',
+          message: 'Optimize with svgo?',
         },
       ]);
       svgo = prompt.svgo;
@@ -137,92 +137,92 @@ async function runner() {
     if (svgo) {
       const { plugins } = await inquirer.prompt([
         {
-          type: "checkbox",
-          name: "plugins",
-          message: "Svgo plugins:",
+          type: 'checkbox',
+          name: 'plugins',
+          message: 'Svgo plugins:',
           default: [
-            "removeDoctype",
-            "removeXMLProcInst",
-            "removeComments",
-            "removeMetadata",
-            "removeTitle",
-            "removeDesc",
-            "removeUselessDefs",
-            "removeEditorsNSData",
-            "removeEmptyAttrs",
-            "removeHiddenElems",
-            "removeEmptyText",
-            "removeEmptyContainers",
-            "cleanupEnableBackground",
-            "convertStyleToAttrs",
-            "convertColors",
-            "convertPathData",
-            "convertTransform",
-            "removeUnknownsAndDefaults",
-            "removeNonInheritableGroupAttrs",
-            "removeUselessStrokeAndFill",
-            "removeUnusedNS",
-            "cleanupIDs",
-            "cleanupNumericValues",
-            "moveGroupAttrsToElems",
-            "collapseGroups",
-            "removeRasterImages",
-            "mergePaths",
-            "convertShapeToPath",
-            "sortAttrs",
-            "removeDimensions",
+            'removeDoctype',
+            'removeXMLProcInst',
+            'removeComments',
+            'removeMetadata',
+            'removeTitle',
+            'removeDesc',
+            'removeUselessDefs',
+            'removeEditorsNSData',
+            'removeEmptyAttrs',
+            'removeHiddenElems',
+            'removeEmptyText',
+            'removeEmptyContainers',
+            'cleanupEnableBackground',
+            'convertStyleToAttrs',
+            'convertColors',
+            'convertPathData',
+            'convertTransform',
+            'removeUnknownsAndDefaults',
+            'removeNonInheritableGroupAttrs',
+            'removeUselessStrokeAndFill',
+            'removeUnusedNS',
+            'cleanupIDs',
+            'cleanupNumericValues',
+            'moveGroupAttrsToElems',
+            'collapseGroups',
+            'removeRasterImages',
+            'mergePaths',
+            'convertShapeToPath',
+            'sortAttrs',
+            'removeDimensions',
           ],
           choices: [
-            "removeDoctype",
-            "removeXMLProcInst",
-            "removeComments",
-            "removeMetadata",
-            "removeTitle",
-            "removeDesc",
-            "removeUselessDefs",
-            "removeEditorsNSData",
-            "removeEmptyAttrs",
-            "removeHiddenElems",
-            "removeEmptyText",
-            "removeEmptyContainers",
-            "cleanupEnableBackground",
-            "convertStyleToAttrs",
-            "convertColors",
-            "convertPathData",
-            "convertTransform",
-            "removeUnknownsAndDefaults",
-            "removeNonInheritableGroupAttrs",
-            "removeUselessStrokeAndFill",
-            "removeUnusedNS",
-            "cleanupIDs",
-            "cleanupNumericValues",
-            "moveGroupAttrsToElems",
-            "collapseGroups",
-            "removeRasterImages",
-            "mergePaths",
-            "convertShapeToPath",
-            "sortAttrs",
-            "removeDimensions",
+            'removeDoctype',
+            'removeXMLProcInst',
+            'removeComments',
+            'removeMetadata',
+            'removeTitle',
+            'removeDesc',
+            'removeUselessDefs',
+            'removeEditorsNSData',
+            'removeEmptyAttrs',
+            'removeHiddenElems',
+            'removeEmptyText',
+            'removeEmptyContainers',
+            'cleanupEnableBackground',
+            'convertStyleToAttrs',
+            'convertColors',
+            'convertPathData',
+            'convertTransform',
+            'removeUnknownsAndDefaults',
+            'removeNonInheritableGroupAttrs',
+            'removeUselessStrokeAndFill',
+            'removeUnusedNS',
+            'cleanupIDs',
+            'cleanupNumericValues',
+            'moveGroupAttrsToElems',
+            'collapseGroups',
+            'removeRasterImages',
+            'mergePaths',
+            'convertShapeToPath',
+            'sortAttrs',
+            'removeDimensions',
           ],
         },
       ]);
 
       options = {
         plugins: plugins.map((opt) =>
-          opt === "convertShapeToPath"
+          opt === 'convertShapeToPath'
             ? {
-                name: "convertShapeToPath",
+                name: 'convertShapeToPath',
                 params: {
                   convertArcs: true,
                 },
               }
-            : opt
+            : opt,
         ),
       };
 
       log.success({
-        name: "Optmizing",
-        message: `Using ${chalk.green("svgo")}`,
+        name: 'Optmizing',
+        message: `Using ${chalk.green('svgo')}`,
       });
     } else {
       log.warning({
@@ -232,7 +232,7 @@ async function runner() {
 
     function handleChildren(child) {
       return child.reduce((acc, { name, attributes, children }) => {
-        if (["path", "stop", "animate"].includes(name)) {
+        if (['path', 'stop', 'animate'].includes(name)) {
           if (acc[`${name}s`]) {
             if (children.length === 0) {
               return {
@@ -262,16 +262,16 @@ async function runner() {
 
     async function parseToJson(fileName) {
       const file = readFileSync(resolve(input, fileName), {
-        encoding: "utf8",
+        encoding: 'utf8',
       });
       let content = file;
 
       if (svgo) {
         const { data } = await optimize(
           readFileSync(resolve(input, fileName), {
-            encoding: "utf8",
+            encoding: 'utf8',
           }),
-          options
+          options,
         );
         content = data;
       }
@@ -298,10 +298,10 @@ async function runner() {
       const indexes = await fileNames
         .filter((fileName) => {
           const { ext } = /\.(?<ext>.*)$/g.exec(fileName).groups || {};
-          return ext === "svg";
+          return ext === 'svg';
         })
         .reduce(async (acc, fileName) => {
-          const key = fileName.split(".")[0];
+          const key = fileName.split('.')[0];
           const value = await parseToJson(fileName);
           const accumulator = await acc;
           const distFile = `${key}.js`;
@@ -310,8 +310,8 @@ async function runner() {
           let indexer;
 
           log.info({
-            name: "Compiling",
-            message: `${fileName} ${chalk.grey("as")} ${chalk.bold(distFile)}`,
+            name: 'Compiling',
+            message: `${fileName} ${chalk.grey('as')} ${chalk.bold(distFile)}`,
           });
 
           if (esm) {
@@ -325,21 +325,21 @@ async function runner() {
           writeFileSync(resolve(dist, distFile), asset);
 
           return accumulator + indexer;
-        }, Promise.resolve(""));
+        }, Promise.resolve(''));
 
-      writeFileSync(resolve(dist, "index.js"), indexes);
+      writeFileSync(resolve(dist, 'index.js'), indexes);
 
       done({ number: fileNames.length });
     }
 
     writeFiles(({ number }) =>
       log.success({
-        name: "Completed",
-        message: `${chalk.gray("Compiled")} ${chalk.green(
+        name: 'Completed',
+        message: `${chalk.gray('Compiled')} ${chalk.green(
           number,
-          "files"
-        )} ${chalk.gray("to")} ${chalk.bold(dist)}`,
-      })
+          'files',
+        )} ${chalk.gray('to')} ${chalk.bold(dist)}`,
+      }),
     );
   } catch (err) {
     log.error(err);

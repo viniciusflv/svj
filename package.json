@@ -1,7 +1,7 @@
 {
   "name": "svj",
   "version": "1.0.1",
-  "description": "CLI to optmize and convert SVGs to JSON resource",
+  "description": "CLI to optmize and convert SVGs to a JSON resource",
   "keywords": [
     "svg",
     "json",
@@ -21,6 +21,17 @@
   "scripts": {
     "release": "release-it"
   },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
   "dependencies": {
     "chalk": "^4.1.1",
     "commander": "^7.2.0",
@@ -36,6 +47,12 @@
     "url": "https://github.com/viniciusflv/svj.git"
   },
   "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@release-it/conventional-changelog": "^2.0.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^4.2.5",
+    "prettier": "^2.3.0",
     "release-it": "^14.7.0"
   }
 }
