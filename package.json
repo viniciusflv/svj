@@ -19,7 +19,7 @@
     "svj": "./svj.js"
   },
   "scripts": {
-    "release": "release-it"
+    "release": "release-it --ci"
   },
   "husky": {
     "hooks": {
