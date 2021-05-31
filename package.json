@@ -1,6 +1,6 @@
 {
   "name": "svj",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "CLI to optmize and convert SVGs to a JSON resource",
   "keywords": [
     "svg",
