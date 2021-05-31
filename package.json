@@ -1,6 +1,6 @@
 {
   "name": "svj",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "CLI to optmize and convert SVGs to a JSON resource",
   "keywords": [
     "svg",
@@ -20,10 +20,11 @@
   },
   "scripts": {
     "cz": "exec < /dev/tty && git cz --hook || true",
-    "release": "release-it --ci"
+    "release": " HUSKY_SKIP_HOOKS=1 release-it -d"
   },
   "husky": {
     "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
