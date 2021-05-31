@@ -20,7 +20,7 @@
   },
   "scripts": {
     "cz": "exec < /dev/tty && git cz --hook || true",
-    "release": " HUSKY_SKIP_HOOKS=1 release-it -d"
+    "release": " HUSKY_SKIP_HOOKS=1 release-it"
   },
   "husky": {
     "hooks": {
