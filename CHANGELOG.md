@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/viniciusflv/svj/compare/1.0.4...1.1.0) (2021-07-23)
+
+
+### Features
+
+* **typescript:** add typescript support ([4300c92](https://github.com/viniciusflv/svj/commit/4300c92f5d8bdb9137a0a277825e1dad9f6c2437))
+
 ## [1.0.4](https://github.com/viniciusflv/svj/compare/1.0.1...1.0.4) (2021-05-31)
 
 
