@@ -57,9 +57,10 @@ async function runner() {
     .option('-d, --dist [dist]', 'dist file')
     .option('--svgo', 'use svgo optmizer')
     .option('--esm', 'use ECMAScript Modules')
+    .option('--ts', 'use TypeScript')
     .parse(process.argv);
 
-  let { input, dist, svgo, esm } = cli.opts();
+  let { input, dist, svgo, esm, ts } = cli.opts();
   let options = {};
 
   try {
@@ -102,20 +103,34 @@ async function runner() {
       }
     }
 
-    if (!esm) {
+    if (!esm && !ts) {
       const prompt = await inquirer.prompt([
         {
-          type: 'confirm',
-          name: 'esm',
+          type: 'list',
+          name: 'module',
           message: 'Use ECMAScript Modules?',
+          choices: [
+            { name: 'TypeScript', value: 'ts' },
+            { name: 'ECMAScript', value: 'esm' },
+            { name: 'CommonJS', value: 'cjs' },
+          ],
         },
       ]);
-      esm = prompt.esm;
-      if (!prompt.esm) {
-        log.info({
-          message: `Using CommonJS`,
-        });
-      }
+      const handler = {
+        ts: () => {
+          ts = true;
+          log.info({ message: `Using TypeScript` });
+        },
+        esm: () => {
+          esm = true;
+          log.info({ message: `Using ECMAScript Modules` });
+        },
+        cjs: () => {
+          log.info({ message: `Using CommonJS` });
+        },
+      }[prompt.module];
+
+      handler();
     }
 
     if (!svgo) {
@@ -128,82 +143,50 @@ async function runner() {
       ]);
       svgo = prompt.svgo;
       if (!prompt.svgo) {
-        log.warning({
-          message: `Not using svgo to optimize your SVGs`,
-        });
+        log.warning({ message: `Not using svgo to optimize your SVGs` });
       }
     }
 
     if (svgo) {
+      const svgoOptions = [
+        'removeDoctype',
+        'removeXMLProcInst',
+        'removeComments',
+        'removeMetadata',
+        'removeTitle',
+        'removeDesc',
+        'removeUselessDefs',
+        'removeEditorsNSData',
+        'removeEmptyAttrs',
+        'removeHiddenElems',
+        'removeEmptyText',
+        'removeEmptyContainers',
+        'cleanupEnableBackground',
+        'convertStyleToAttrs',
+        'convertColors',
+        'convertPathData',
+        'convertTransform',
+        'removeUnknownsAndDefaults',
+        'removeNonInheritableGroupAttrs',
+        'removeUselessStrokeAndFill',
+        'removeUnusedNS',
+        'cleanupIDs',
+        'cleanupNumericValues',
+        'moveGroupAttrsToElems',
+        'collapseGroups',
+        'removeRasterImages',
+        'mergePaths',
+        'convertShapeToPath',
+        'sortAttrs',
+        'removeDimensions',
+      ];
       const { plugins } = await inquirer.prompt([
         {
           type: 'checkbox',
           name: 'plugins',
           message: 'Svgo plugins:',
-          default: [
-            'removeDoctype',
-            'removeXMLProcInst',
-            'removeComments',
-            'removeMetadata',
-            'removeTitle',
-            'removeDesc',
-            'removeUselessDefs',
-            'removeEditorsNSData',
-            'removeEmptyAttrs',
-            'removeHiddenElems',
-            'removeEmptyText',
-            'removeEmptyContainers',
-            'cleanupEnableBackground',
-            'convertStyleToAttrs',
-            'convertColors',
-            'convertPathData',
-            'convertTransform',
-            'removeUnknownsAndDefaults',
-            'removeNonInheritableGroupAttrs',
-            'removeUselessStrokeAndFill',
-            'removeUnusedNS',
-            'cleanupIDs',
-            'cleanupNumericValues',
-            'moveGroupAttrsToElems',
-            'collapseGroups',
-            'removeRasterImages',
-            'mergePaths',
-            'convertShapeToPath',
-            'sortAttrs',
-            'removeDimensions',
-          ],
-          choices: [
-            'removeDoctype',
-            'removeXMLProcInst',
-            'removeComments',
-            'removeMetadata',
-            'removeTitle',
-            'removeDesc',
-            'removeUselessDefs',
-            'removeEditorsNSData',
-            'removeEmptyAttrs',
-            'removeHiddenElems',
-            'removeEmptyText',
-            'removeEmptyContainers',
-            'cleanupEnableBackground',
-            'convertStyleToAttrs',
-            'convertColors',
-            'convertPathData',
-            'convertTransform',
-            'removeUnknownsAndDefaults',
-            'removeNonInheritableGroupAttrs',
-            'removeUselessStrokeAndFill',
-            'removeUnusedNS',
-            'cleanupIDs',
-            'cleanupNumericValues',
-            'moveGroupAttrsToElems',
-            'collapseGroups',
-            'removeRasterImages',
-            'mergePaths',
-            'convertShapeToPath',
-            'sortAttrs',
-            'removeDimensions',
-          ],
+          default: svgoOptions,
+          choices: svgoOptions,
         },
       ]);
 
@@ -223,10 +206,6 @@ async function runner() {
       log.success({
         name: 'Optmizing',
         message: `Using ${chalk.green('svgo')}`,
-      });
-    } else {
-      log.warning({
-        message: `Not optmizing your SVGs`,
       });
     }
 
@@ -290,6 +269,7 @@ async function runner() {
 
     async function writeFiles(done) {
       const fileNames = readdirSync(input);
+      const fileExtension = ts ? 'ts' : 'js';
 
       if (!existsSync(dist)) {
         mkdirSync(dist);
@@ -304,7 +284,7 @@ async function runner() {
           const key = fileName.split('.')[0];
           const value = await parseToJson(fileName);
           const accumulator = await acc;
-          const distFile = `${key}.js`;
+          const distFile = `${key}.${fileExtension}`;
           const jsonStr = JSON.stringify(value, undefined, 2);
           let asset;
           let indexer;
@@ -314,7 +294,7 @@ async function runner() {
             message: `${fileName} ${chalk.grey('as')} ${chalk.bold(distFile)}`,
           });
 
-          if (esm) {
+          if (esm || ts) {
             asset = `export const ${key} = ${jsonStr}`;
             indexer = `export * from './${key}';\n`;
           } else {
@@ -327,7 +307,7 @@ async function runner() {
           return accumulator + indexer;
         }, Promise.resolve(''));
 
-      writeFileSync(resolve(dist, 'index.js'), indexes);
+      writeFileSync(resolve(dist, `index.${fileExtension}`), indexes);
 
       done({ number: fileNames.length });
     }

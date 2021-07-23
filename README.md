@@ -1,4 +1,13 @@
 # SVJ - CLI to optmize and convert SVGs to a JSON resource
+
+## Motivations
+
+Importing SVGs as images has a runtime cost, inline unused SVGs has bundle size cost and using a loader to create SVG components, has both bundle size and build time costs.
+
+In order to manipulate SVG assets without a loader, keeping the gains of tree shaking algorithms, and using a familiar simple syntax, I'd decided to use JSON.
+
+I'd found a lib that converts [SVG to JSON](https://github.com/elrumordelaluz/svgson), but, for support reasons, theirs parsing result was too verbose for my needs. Also the SVG wasn't being optimized, so in addition to simplifying the JSON output, I'd added [SVGO](https://github.com/svg/svgo) as an option to create a smaller result.
+
 ## Options:
 
 <table>
@@ -7,6 +16,7 @@
   <tr><td>-d, --dist [dist]</td><td>dist file</td></tr>
   <tr><td>--svgo</td><td>use svgo optmizer</td></tr>
   <tr><td>--esm</td><td>use ECMAScript Modules</td></tr>
+  <tr><td>--ts</td><td>use TypeScript</td></tr>
   <tr><td>-h, --help</td><td>display help for command</td></tr>
 </table>
 
