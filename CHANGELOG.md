@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/viniciusflv/svj/compare/1.1.0...1.2.0) (2022-04-01)
+
+
+### Features
+
+* recommended options, force camelCase filename ([91e854a](https://github.com/viniciusflv/svj/commit/91e854a64c6366e219c62c082b42fdb0372ab0bb))
+
 # [1.1.0](https://github.com/viniciusflv/svj/compare/1.0.4...1.1.0) (2021-07-23)
 
 
