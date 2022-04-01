@@ -6,6 +6,7 @@ const { resolve } = require('path');
 const { parse } = require('svgson');
 const { optimize } = require('svgo');
 const { Command } = require('commander');
+const { camelCase } = require('change-case');
 const {
   readFileSync,
   readdirSync,
@@ -53,6 +54,7 @@ async function runner() {
       '-v, --version',
       'current version',
     )
+    .option('-r, --recommended', 'use recommended options')
     .option('-i, --input [input]', 'input file')
     .option('-d, --dist [dist]', 'dist file')
     .option('--svgo', 'use svgo optmizer')
@@ -60,8 +62,13 @@ async function runner() {
     .option('--ts', 'use TypeScript')
     .parse(process.argv);
 
-  let { input, dist, svgo, esm, ts } = cli.opts();
+  let { input, dist, svgo, esm, ts, recommended } = cli.opts();
   let options = {};
+
+  if (recommended) {
+    ts = recommended;
+    svgo = recommended;
+  }
 
   try {
     if (!input) {
@@ -180,18 +187,25 @@ async function runner() {
         'sortAttrs',
         'removeDimensions',
       ];
-      const { plugins } = await inquirer.prompt([
-        {
-          type: 'checkbox',
-          name: 'plugins',
-          message: 'Svgo plugins:',
-          default: svgoOptions,
-          choices: svgoOptions,
-        },
-      ]);
+
+      if (!recommended) {
+        const { plugins } = await inquirer.prompt([
+          {
+            type: 'checkbox',
+            name: 'plugins',
+            message: 'Svgo plugins:',
+            default: svgoOptions,
+            choices: svgoOptions,
+          },
+        ]);
+
+        pluginOptions = plugins;
+      } else {
+        pluginOptions = svgoOptions;
+      }
 
       options = {
-        plugins: plugins.map((opt) =>
+        plugins: pluginOptions.map((opt) =>
           opt === 'convertShapeToPath'
             ? {
                 name: 'convertShapeToPath',
@@ -281,7 +295,7 @@ async function runner() {
           return ext === 'svg';
         })
         .reduce(async (acc, fileName) => {
-          const key = fileName.split('.')[0];
+          const key = camelCase(fileName.split('.')[0]);
           const value = await parseToJson(fileName);
           const accumulator = await acc;
           const distFile = `${key}.${fileExtension}`;

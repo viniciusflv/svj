@@ -1,4 +1,7 @@
+export * from './arrowSpace';
+export * from './arrowKebab';
 export * from './arrow';
+export * from './arrowSnake';
 export * from './close';
 export * from './copy';
 export * from './core';

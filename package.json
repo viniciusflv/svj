@@ -51,7 +51,8 @@
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@release-it/conventional-changelog": "^2.0.1",
-    "cz-conventional-changelog": "^3.3.0",
+    "change-case": "^4.1.2",
+    "cz-conventional-changelog": "^3.0.1",
     "husky": "^4.2.5",
     "prettier": "^2.3.0",
     "release-it": "^14.7.0"
