@@ -1,3 +1,10 @@
+## [1.2.1](https://github.com/viniciusflv/svj/compare/1.2.0...1.2.1) (2022-04-08)
+
+
+### Bug Fixes
+
+* change-case as dependencie ([a0e02bb](https://github.com/viniciusflv/svj/commit/a0e02bb0f1390fe6e4ee32dac4183eea37a002ff))
+
 # [1.2.0](https://github.com/viniciusflv/svj/compare/1.1.0...1.2.0) (2022-04-01)
 
 
