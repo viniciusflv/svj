@@ -1,4 +1,4 @@
-# SVJ - CLI to optmize and convert SVGs to a JSON resource
+# SVJ - CLI to optimize and convert SVGs to a JSON resource
 
 ## Motivations
 
