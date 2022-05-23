@@ -303,7 +303,7 @@ async function runner() {
       const fileExtension = ts ? 'ts' : 'js';
 
       if (!existsSync(dist)) {
-        mkdirSync(dist);
+        mkdirSync(dist, { recursive: true });
       }
 
       const indexes = await fileNames
