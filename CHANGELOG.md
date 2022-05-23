@@ -1,3 +1,16 @@
+# [1.3.0](https://github.com/viniciusflv/svj/compare/1.2.3...1.3.0) (2022-05-23)
+
+
+### Bug Fixes
+
+* add cross-env ([7582074](https://github.com/viniciusflv/svj/commit/7582074632394ba902cad1be5363c02a925f1cf6))
+
+
+### Features
+
+* nested inputs ([49bab05](https://github.com/viniciusflv/svj/commit/49bab0585c7a48da2ac7b182015cedf6d2fe0308))
+* recursive dist ([51ba8be](https://github.com/viniciusflv/svj/commit/51ba8bece3caf571a03cd8a07f6a47e0d3d3b71b))
+
 ## [1.2.3](https://github.com/viniciusflv/svj/compare/1.2.2...1.2.3) (2022-04-08)
 
 ## [1.2.2](https://github.com/viniciusflv/svj/compare/1.2.1...1.2.2) (2022-04-08)
