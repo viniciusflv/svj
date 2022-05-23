@@ -11,5 +11,6 @@ export * from './light';
 export * from './lightbulb';
 export * from './logo';
 export * from './modules';
+export * from './arrowNested';
 export * from './react';
 export * from './rocket';

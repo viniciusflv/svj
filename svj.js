@@ -13,6 +13,7 @@ const {
   writeFileSync,
   existsSync,
   mkdirSync,
+  lstatSync,
 } = require('fs');
 
 const { name, version } = require('./package.json');
@@ -253,15 +254,15 @@ async function runner() {
       }, {});
     }
 
-    async function parseToJson(fileName) {
-      const file = readFileSync(resolve(input, fileName), {
+    async function parseToJson(path) {
+      const file = readFileSync(path, {
         encoding: 'utf8',
       });
       let content = file;
 
       if (svgo) {
         const { data } = await optimize(
-          readFileSync(resolve(input, fileName), {
+          readFileSync(path, {
             encoding: 'utf8',
           }),
           options,
@@ -281,8 +282,24 @@ async function runner() {
       };
     }
 
+    function readdirFlattenSync(entry) {
+      return Array.from(
+        (function* () {
+          const files = readdirSync(entry);
+          for (const fileName of files) {
+            const path = resolve(entry, fileName);
+            if (lstatSync(path).isDirectory()) {
+              yield* readdirFlattenSync(path);
+            } else {
+              yield { fileName, path };
+            }
+          }
+        })(),
+      );
+    }
+
     async function writeFiles(done) {
-      const fileNames = readdirSync(input);
+      const fileNames = readdirFlattenSync(input);
       const fileExtension = ts ? 'ts' : 'js';
 
       if (!existsSync(dist)) {
@@ -290,13 +307,13 @@ async function runner() {
       }
 
       const indexes = await fileNames
-        .filter((fileName) => {
-          const { ext } = /\.(?<ext>.*)$/g.exec(fileName).groups || {};
+        .filter(({ fileName }) => {
+          const { ext } = /\.(?<ext>.*)$/g.exec(fileName)?.groups || {};
           return ext === 'svg';
         })
-        .reduce(async (acc, fileName) => {
+        .reduce(async (acc, { fileName, path }) => {
           const key = camelCase(fileName.split('.')[0]);
-          const value = await parseToJson(fileName);
+          const value = await parseToJson(path);
           const accumulator = await acc;
           const distFile = `${key}.${fileExtension}`;
           const jsonStr = JSON.stringify(value, undefined, 2);
