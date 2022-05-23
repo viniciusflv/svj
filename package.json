@@ -20,7 +20,7 @@
   },
   "scripts": {
     "cz": "exec < /dev/tty && git cz --hook || true",
-    "release": " HUSKY_SKIP_HOOKS=1 release-it"
+    "release": "cross-env HUSKY_SKIP_HOOKS=1 release-it"
   },
   "husky": {
     "hooks": {
@@ -35,11 +35,11 @@
   },
   "dependencies": {
     "chalk": "^4.1.1",
+    "change-case": "^4.1.2",
     "commander": "^7.2.0",
     "inquirer": "^8.1.0",
     "svgo": "^2.3.0",
-    "svgson": "^5.2.1",
-    "change-case": "^4.1.2"
+    "svgson": "^5.2.1"
   },
   "publishConfig": {
     "access": "public"
@@ -52,6 +52,7 @@
     "@commitlint/cli": "^12.1.4",
     "@commitlint/config-conventional": "^12.1.4",
     "@release-it/conventional-changelog": "^2.0.1",
+    "cross-env": "^7.0.3",
     "cz-conventional-changelog": "^3.0.1",
     "husky": "^4.2.5",
     "prettier": "^2.3.0",
