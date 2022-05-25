@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/viniciusflv/svj/compare/1.3.0...2.0.0) (2022-05-25)
+
+
+### Code Refactoring
+
+* modify output format ([b9558d7](https://github.com/viniciusflv/svj/commit/b9558d772760c87be39d5884d01dc580f4abf989))
+
+
+### BREAKING CHANGES
+
+* modify output
+
 # [1.3.0](https://github.com/viniciusflv/svj/compare/1.2.3...1.3.0) (2022-05-23)
 
 
