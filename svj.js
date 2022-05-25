@@ -2,6 +2,7 @@
 
 const chalk = require('chalk');
 const inquirer = require('inquirer');
+const cssToObject = require('css-to-object');
 const { resolve } = require('path');
 const { parse } = require('svgson');
 const { optimize } = require('svgo');
@@ -224,36 +225,6 @@ async function runner() {
       });
     }
 
-    function handleChildren(child) {
-      return child.reduce((acc, { name, attributes, children }) => {
-        if (['path', 'stop', 'animate'].includes(name)) {
-          if (acc[`${name}s`]) {
-            if (children.length === 0) {
-              return {
-                ...acc,
-                [`${name}s`]: [...acc[`${name}s`], attributes],
-              };
-            }
-            return {
-              ...acc,
-              [`${name}s`]: [
-                ...acc[`${name}s`],
-                { ...attributes, ...handleChildren(children) },
-              ],
-            };
-          }
-          if (children.length === 0)
-            return { ...acc, [`${name}s`]: [attributes] };
-          return {
-            ...acc,
-            [`${name}s`]: [{ ...attributes, ...handleChildren(children) }],
-          };
-        }
-        if (children.length === 0) return { ...acc, [name]: attributes };
-        return { ...acc, [name]: handleChildren(children) };
-      }, {});
-    }
-
     async function parseToJson(path) {
       const file = readFileSync(path, {
         encoding: 'utf8',
@@ -270,16 +241,39 @@ async function runner() {
         content = data;
       }
 
-      const {
-        attributes: { viewBox, fill },
-        children,
-      } = await parse(content, { camelcase: true });
+      const svgson = await parse(content, { camelcase: true });
 
-      return {
-        viewBox,
-        fill,
-        ...handleChildren(children),
+      const morph = ({ name: tag, attributes: props, children }) => {
+        const output = {
+          props,
+          tag,
+          children: children?.length ? children.map(morph) : children,
+        };
+        return tag === 'svg' ? [output] : output;
       };
+
+      const group = (morphed, root = true) => {
+        return morphed?.reduce((acc, { tag, props, children }) => {
+          const tags = acc?.children ?? [];
+          const { class: className, style, ...rest } = props;
+          const attr = {
+            ...rest,
+            className,
+            style: style && cssToObject(style, { camelCase: true }),
+          };
+          const child = children.length
+            ? [...tags, { tag, props: attr, ...group(children, false) }]
+            : [...tags, { tag, props: attr }];
+          return root
+            ? child[0]
+            : {
+                ...acc,
+                children: child,
+              };
+        }, {});
+      };
+
+      return group(morph(svgson));
     }
 
     function readdirFlattenSync(entry) {

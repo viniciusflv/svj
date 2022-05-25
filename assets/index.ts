@@ -3,6 +3,7 @@ export * from './arrowKebab';
 export * from './arrow';
 export * from './arrowSnake';
 export * from './close';
+export * from './complexExample';
 export * from './copy';
 export * from './core';
 export * from './dark';
