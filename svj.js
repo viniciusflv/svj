@@ -8,6 +8,7 @@ const { parse } = require('svgson');
 const { optimize } = require('svgo');
 const { Command } = require('commander');
 const { camelCase } = require('change-case');
+const { dirname, relative } = require('path');
 const {
   readFileSync,
   readdirSync,
@@ -59,17 +60,19 @@ async function runner() {
     .option('-r, --recommended', 'use recommended options')
     .option('-i, --input [input]', 'input file')
     .option('-d, --dist [dist]', 'dist file')
+    .option('-s, --suffix', 'use nested folders name to add suffix')
     .option('--svgo', 'use svgo optmizer')
     .option('--esm', 'use ECMAScript Modules')
     .option('--ts', 'use TypeScript')
     .parse(process.argv);
 
-  let { input, dist, svgo, esm, ts, recommended } = cli.opts();
+  let { input, dist, svgo, esm, ts, recommended, suffix } = cli.opts();
   let options = {};
 
   if (recommended) {
     ts = recommended;
     svgo = recommended;
+    suffix = recommended;
   }
 
   try {
@@ -140,6 +143,17 @@ async function runner() {
       }[prompt.module];
 
       handler();
+    }
+
+    if (!suffix) {
+      const prompt = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'suffix',
+          message: 'Should use recursive folder naming suffix?',
+        },
+      ]);
+      suffix = prompt.suffix;
     }
 
     if (!svgo) {
@@ -293,6 +307,7 @@ async function runner() {
     }
 
     async function writeFiles(done) {
+      const rootDir = resolve(input);
       const fileNames = readdirFlattenSync(input);
       const fileExtension = ts ? 'ts' : 'js';
 
@@ -306,6 +321,16 @@ async function runner() {
           return ext === 'svg';
         })
         .reduce(async (acc, { fileName, path }) => {
+          if (suffix) {
+            let nestedSuffix = '';
+            const nestedDir = relative(rootDir, dirname(path));
+
+            if (nestedDir) {
+              nestedSuffix = `-${nestedDir.replace(/\\|\//g, '-')}`;
+            }
+
+            fileName = fileName.replace(/(.*)(\.svg)/g, `$1${nestedSuffix}$2`);
+          }
           const key = camelCase(fileName.split('.')[0]);
           const value = await parseToJson(path);
           const accumulator = await acc;

@@ -12,9 +12,10 @@ I'd found a lib that converts [SVG to JSON](https://github.com/elrumordelaluz/sv
 
 <table>
   <tr><td>-v, --version</td><td>current version</td></tr>
-  <tr><td>-r, --recommended</td><td>use recommended options</td></tr>
+  <tr><td>-r, --recommended</td><td>use recommended options <strong>(MAY HAVE BREAKING CHANGES)</strong></td></tr>
   <tr><td>-i, --input [input]</td><td>input file</td></tr>
   <tr><td>-d, --dist [dist]</td><td>dist file</td></tr>
+  <tr><td>-s, --suffix</td><td>use nested folders name to add suffix</td></tr>
   <tr><td>--svgo</td><td>use svgo optmizer</td></tr>
   <tr><td>--esm</td><td>use ECMAScript Modules</td></tr>
   <tr><td>--ts</td><td>use TypeScript</td></tr>
