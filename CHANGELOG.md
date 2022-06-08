@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/viniciusflv/svj/compare/2.0.0...2.1.0) (2022-06-08)
+
+
+### Features
+
+* suffix nested folders ([c1dac46](https://github.com/viniciusflv/svj/commit/c1dac46cb5fe2cb2a0cc2cf2cc0c2f7524a02ef5))
+
 # [2.0.0](https://github.com/viniciusflv/svj/compare/1.3.0...2.0.0) (2022-05-25)
 
 
