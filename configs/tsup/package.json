@@ -1,0 +1,12 @@
+{
+  "name": "@configs/tsup",
+  "dependencies": {
+    "esbuild-node-externals": "^1.4.1",
+    "tsup": "^6.2.1"
+  },
+  "main": "index.js",
+  "files": [
+    "inject.js"
+  ],
+  "private": true
+}

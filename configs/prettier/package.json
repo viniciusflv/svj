@@ -1,0 +1,9 @@
+{
+  "name": "@configs/prettier",
+  "dependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^3.3.0",
+    "prettier": "^2.7.1"
+  },
+  "main": "index.js",
+  "private": true
+}

@@ -1,0 +1,10 @@
+{
+  "name": "@configs/typescript",
+  "dependencies": {
+    "typescript": "4.7.4"
+  },
+  "files": [
+    "base.json",
+    "react-library.json"
+  ]
+}

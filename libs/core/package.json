@@ -1,0 +1,41 @@
+{
+	"name": "@svj/core",
+	"version": "0.0.0",
+	"description": "Optimize and convert SVGs to a JSON resource",
+	"scripts": {
+		"bundle": "tsup"
+	},
+	"dependencies": {
+		"change-case": "^4.1.2",
+		"css-to-object": "^1.1.0",
+		"svgo": "^2.8.0",
+		"svgson": "^5.2.1"
+	},
+	"devDependencies": {
+		"@configs/tsup": "*",
+		"@configs/babel": "*",
+		"@configs/typescript": "*"
+	},
+	"private": false,
+	"author": "Vinícius Victorino",
+	"license": "MIT",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"module": "dist/index.mjs",
+	"files": [
+		"dist"
+	],
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/viniciusflv/svj.git"
+	},
+	"keywords": [
+		"svg",
+		"json",
+		"js",
+		"cli"
+	]
+}

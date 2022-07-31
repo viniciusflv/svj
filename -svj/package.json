@@ -1,0 +1,62 @@
+{
+  "name": "svj",
+  "version": "2.1.0",
+  "description": "CLI to optimize and convert SVGs to a JSON resource",
+  "keywords": [
+    "svg",
+    "json",
+    "js",
+    "cli"
+  ],
+  "author": "Vinícius Victorino",
+  "license": "MIT",
+  "private": false,
+  "main": "svj.js",
+  "files": [
+    "svj.js"
+  ],
+  "bin": {
+    "svj": "./svj.js"
+  },
+  "scripts": {
+    "cz": "exec < /dev/tty && git cz --hook || true",
+    "release": "cross-env HUSKY_SKIP_HOOKS=1 release-it"
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "dependencies": {
+    "chalk": "^4.1.1",
+    "change-case": "^4.1.2",
+    "commander": "^7.2.0",
+    "css-to-object": "^1.1.0",
+    "inquirer": "^8.1.0",
+    "svgo": "^2.8.0",
+    "svgson": "^5.2.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viniciusflv/svj.git"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
+    "@release-it/conventional-changelog": "^2.0.1",
+    "cross-env": "^7.0.3",
+    "cz-conventional-changelog": "^3.0.1",
+    "husky": "^4.2.5",
+    "prettier": "^2.3.0",
+    "release-it": "^14.7.0"
+  }
+}
