@@ -1,44 +1,45 @@
 {
-	"name": "svj",
-	"version": "2.1.0",
-	"description": "CLI to optimize and convert SVGs to a JSON resource",
-	"scripts": {
-		"bundle": "tsup"
-	},
-	"dependencies": {
-		"@svj/core": "*",
-		"chalk": "^4.1.2",
-		"inquirer": "^8.1.0",
-		"commander": "^9.4.0"
-	},
-	"devDependencies": {
-		"@configs/tsup": "*",
-		"@configs/babel": "*",
-		"@configs/typescript": "*"
-	},
-	"private": false,
-	"author": "Vinícius Victorino",
-	"license": "MIT",
-	"main": "dist/index.js",
-	"types": "dist/index.d.ts",
-	"module": "dist/index.mjs",
-	"files": [
-		"dist"
-	],
-	"bin": {
-		"svj": "dist/index.js"
-	},
-	"publishConfig": {
-		"access": "public"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/viniciusflv/svj.git"
-	},
-	"keywords": [
-		"svg",
-		"json",
-		"js",
-		"cli"
-	]
+  "name": "svj",
+  "version": "2.1.0",
+  "description": "CLI to optimize and convert SVGs to a JSON resource",
+  "scripts": {
+    "bundle": "tsup"
+  },
+  "dependencies": {
+    "@svj/core": "*",
+    "chalk": "^4.1.2",
+    "cli-spinners": "^2.7.0",
+    "commander": "^9.4.0",
+    "inquirer": "^8.1.0"
+  },
+  "devDependencies": {
+    "@configs/babel": "*",
+    "@configs/tsup": "*",
+    "@configs/typescript": "*"
+  },
+  "private": false,
+  "author": "Vinícius Victorino",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "module": "dist/index.mjs",
+  "files": [
+    "dist"
+  ],
+  "bin": {
+    "svj": "dist/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/viniciusflv/svj.git"
+  },
+  "keywords": [
+    "svg",
+    "json",
+    "js",
+    "cli"
+  ]
 }

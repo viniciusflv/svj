@@ -1,29 +1,43 @@
 {
-	"name": "svj-monorepo",
-	"workspaces": [
-		"configs/*",
-		"libs/*"
-	],
-	"scripts": {
-		"svg": "svj",
-		"lint": "eslint --fix \"**/*.{ts,tsx}\"",
-		"format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
-		"bundle": "turbo run bundle",
-		"postinstall": "npm run bundle"
-	},
-	"dependencies": {
-		"svj": "*"
-	},
-	"devDependencies": {
-		"@configs/babel": "*",
-		"@configs/eslint": "*",
-		"@configs/prettier": "*",
-		"turbo": "latest"
-	},
-	"private": true,
-	"packageManager": "npm@8.5.5",
-	"engines": {
-		"npm": ">=7.0.0",
-		"node": ">=14.0.0"
-	}
+  "name": "svj-monorepo",
+  "workspaces": [
+    "configs/*",
+    "libs/*"
+  ],
+  "scripts": {
+    "svg": "svj",
+    "lint": "eslint --fix \"**/*.{ts,tsx}\"",
+    "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
+    "bundle": "turbo run bundle",
+    "change": "changeset",
+    "promote": "changeset version",
+    "publish": "changeset publish",
+    "postinstall": "npm run bundle",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,json}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "dependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
+    "svj": "*"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.24.1",
+    "@configs/babel": "*",
+    "@configs/commitlint": "*",
+    "@configs/eslint": "*",
+    "@configs/prettier": "*",
+    "turbo": "1.4.0"
+  },
+  "private": true,
+  "packageManager": "npm@8.5.5",
+  "engines": {
+    "npm": ">=7.0.0",
+    "node": ">=14.0.0"
+  }
 }

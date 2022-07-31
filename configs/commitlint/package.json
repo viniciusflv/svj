@@ -1,0 +1,9 @@
+{
+  "name": "@configs/commitlint",
+  "dependencies": {
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3"
+  },
+  "main": "index.js",
+  "private": true
+}
