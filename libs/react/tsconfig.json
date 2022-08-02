@@ -1,0 +1,12 @@
+{
+  "extends": "@configs/typescript/react-library.json",
+  "include": ["src/**/*"],
+  "exclude": [
+    "dist",
+    "build",
+    "node_modules",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.stories.tsx"
+  ]
+}
