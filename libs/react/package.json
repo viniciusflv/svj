@@ -1,5 +1,5 @@
 {
-  "name": "@svj/react",
+  "name": "@svjson/react",
   "version": "0.0.1",
   "description": "Component to render the SVJ JSON resource",
   "scripts": {

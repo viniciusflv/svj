@@ -1,5 +1,5 @@
 {
-  "name": "@svj/core",
+  "name": "@svjson/core",
   "version": "0.0.1",
   "description": "Optimize and convert SVGs to a JSON resource",
   "scripts": {
