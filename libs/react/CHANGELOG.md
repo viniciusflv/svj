@@ -1,4 +1,10 @@
-# @svj/react
+# @svjson/react
+
+## 0.0.2
+
+### Patch Changes
+
+- Change svj org to svjson
 
 ## 0.0.1
 

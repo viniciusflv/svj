@@ -1,6 +1,6 @@
 {
   "name": "@svjson/react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Component to render the SVJ JSON resource",
   "scripts": {
     "bundle": "tsup"

@@ -1,6 +1,6 @@
 {
   "name": "@svjson/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Optimize and convert SVGs to a JSON resource",
   "scripts": {
     "bundle": "tsup"

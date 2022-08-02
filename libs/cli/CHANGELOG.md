@@ -1,4 +1,12 @@
-# [2.1.0](https://github.com/viniciusflv/svj/compare/2.0.0...2.1.0) (2022-06-08)
+# @svjson/core
+
+## 2.2.1
+
+### Patch Changes
+
+- Change svj org to svjson
+- Updated dependencies
+  - @svjson/core@0.0.2
 
 ## 2.2.0
 

@@ -1,4 +1,10 @@
-# @svj/core
+# @svjson/core
+
+## 0.0.2
+
+### Patch Changes
+
+- Change svj org to svjson
 
 ## 0.0.1
 
