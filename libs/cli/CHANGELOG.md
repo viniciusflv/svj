@@ -1,5 +1,16 @@
 # [2.1.0](https://github.com/viniciusflv/svj/compare/2.0.0...2.1.0) (2022-06-08)
 
+## 2.2.0
+
+### Minor Changes
+
+- 0c282c7: move to a monorepo structure
+
+### Patch Changes
+
+- Updated dependencies [0c282c7]
+  - @svj/core@0.0.1
+
 ### Features
 
 - suffix nested folders ([c1dac46](https://github.com/viniciusflv/svj/commit/c1dac46cb5fe2cb2a0cc2cf2cc0c2f7524a02ef5))
