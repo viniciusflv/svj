@@ -5,7 +5,7 @@
     "libs/*"
   ],
   "scripts": {
-    "svg": "svj",
+    "svg": "svj -i ./examples/svg -d ./examples/generated -r",
     "lint": "eslint --fix \"**/*.{ts,tsx}\"",
     "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
     "bundle": "turbo run bundle",
@@ -32,7 +32,7 @@
     "@configs/commitlint": "*",
     "@configs/eslint": "*",
     "@configs/prettier": "*",
-    "turbo": "1.4.0"
+    "turbo": "1.4.2"
   },
   "private": true,
   "packageManager": "npm@8.5.5",
