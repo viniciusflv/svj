@@ -1,6 +1,6 @@
 {
   "name": "svj",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "CLI to optimize and convert SVGs to a JSON resource",
   "scripts": {
     "bundle": "tsup"

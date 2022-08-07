@@ -1,5 +1,13 @@
 # @svjson/core
 
+## 2.2.2
+
+### Patch Changes
+
+- Update docs
+- Updated dependencies
+  - @svjson/core@0.0.3
+
 ## 2.2.1
 
 ### Patch Changes
