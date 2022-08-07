@@ -1,15 +1,36 @@
-# SVJ - CLI to optimize and convert SVGs to a JSON resource
+# SVJ Core - Core features for [SVJ](https://www.npmjs.com/package/svj) CLI
 
 ## Installation
 
 ```sh
-npm i -D svj
+npm i -D @svjson/core
 ```
 
 ## Usage
 
-```sh
-npx svj -i <svg-folder-path> -d <dist-folder> -r
+```ts
+import { writeFiles } from '@svjson/core';
+
+writeFiles({
+  dist: './svg',
+  input: './svg',
+  options: {},
+  withSuffix: true,
+  format: 'ts',
+  onCompile: ({ fileName, distFile }) =>
+    console.log({
+      name: 'Compiling',
+      message: `${fileName} ${chalk.grey('as')} ${chalk.bold(distFile)}`,
+    }),
+  onDone: ({ number }) =>
+    console.log({
+      name: 'Completed',
+      message: `${chalk.gray('Compiled')} ${chalk.green(
+        number,
+        'files',
+      )} ${chalk.gray('to')} ${chalk.bold(dist)}`,
+    }),
+});
 ```
 
 ## Motivations
@@ -19,22 +40,6 @@ Importing SVGs as images has a runtime cost, inline unused SVGs has bundle size 
 In order to manipulate SVG assets without a loader, keeping the gains of tree shaking algorithms, and using a familiar simple syntax, I'd decided to use JSON.
 
 I'd found a lib that converts [SVG to JSON](https://github.com/elrumordelaluz/svgson), but, for support reasons, theirs parsing result was too verbose for my needs. Also the SVG wasn't being optimized, so in addition to simplifying the JSON output, I'd added [SVGO](https://github.com/svg/svgo) as an option to create a smaller result.
-
-## Options:
-
-| Option                                 | Description                           |
-| -------------------------------------- | ------------------------------------- |
-| <strong> -v, --version </strong>       | current version                       |
-| <strong> -r, --recommended </strong>   | use recommended options               |
-| <strong> -i, --input [input] </strong> | input file                            |
-| <strong> -d, --dist [dist] </strong>   | dist file                             |
-| <strong> -s, --suffix </strong>        | use nested folders name to add suffix |
-| <strong> --svgo </strong>              | use svgo optmizer                     |
-| <strong> --esm </strong>               | use ECMAScript Modules                |
-| <strong> --ts </strong>                | use TypeScript                        |
-| <strong> -h, --help </strong>          | display help for command              |
-
-## Example:
 
 ### Input SVG file
 
