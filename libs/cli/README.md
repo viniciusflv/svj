@@ -12,6 +12,12 @@ npm i -D svj
 npx svj -i <svg-folder-path> -d <dist-folder> -r
 ```
 
+## Adapter
+
+|       |                                                              |
+| ----- | ------------------------------------------------------------ |
+| React | [@svjson/react](https://www.npmjs.com/package/@svjson/react) |
+
 ## Motivations
 
 Importing SVGs as images has a runtime cost, inline unused SVGs has bundle size cost and using a loader to create SVG components, has both bundle size and build time costs.
