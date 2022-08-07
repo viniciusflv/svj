@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { writeFiles } from '@svj/core';
+import { writeFiles } from '@svjson/core';
 import chalk from 'chalk';
 import { Command } from 'commander';
 // @ts-ignore
