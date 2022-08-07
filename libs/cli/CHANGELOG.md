@@ -1,5 +1,11 @@
 # @svjson/core
 
+## 2.2.3
+
+### Patch Changes
+
+- Add adapter link to cli docs
+
 ## 2.2.2
 
 ### Patch Changes
